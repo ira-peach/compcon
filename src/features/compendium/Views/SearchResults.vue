@@ -83,7 +83,7 @@ export default Vue.extend({
         return []
       }
       const results = this.validResults.filter(
-        r => !r.IsHidden && accentInclude(r.Name, this.searchText)
+        r => !r.IsHidden && r.searchMatch(this.searchText)
       )
       return results
     },

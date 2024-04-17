@@ -6,6 +6,10 @@ import { IActionData, Action } from './Action'
 import { IBonusData, Bonus } from './components/feature/bonus/Bonus'
 import { ISynergyData, Synergy } from './components/feature/synergy/Synergy'
 import { IDeployableData } from './components/feature/deployable/Deployable'
+import { accentInclude } from '@/classes/utility/accent_fold'
+import { Frame } from './mech/components/frame/Frame'
+import { FrameTrait } from './mech/components/frame/FrameTrait'
+import { CoreSystem } from './mech/components/frame/CoreSystem'
 
 interface ICompendiumItemData {
   id: string
@@ -181,6 +185,20 @@ abstract class CompendiumItem {
 
   public get Color(): string {
     return _.kebabCase(this.ItemType)
+  }
+
+  private prop<T>(name: string, def?: T|null): T|null {
+    if (name in this) return this[name] as T ?? def
+    return def ?? null
+  }
+
+  public searchMatch(text: string): boolean {
+    return accentInclude(this.Name, text)
+      || accentInclude(this.Description, text)
+      || this.Actions.some(a => a.searchMatch(text))
+      || this.prop<FrameTrait[]>("Traits", [])?.some(t => t.searchMatch(text))
+      || this.prop<CoreSystem>("CoreSystem")?.searchMatch(text)
+      || accentInclude(this.prop<string>("Effect", ""), text)
   }
 }
 

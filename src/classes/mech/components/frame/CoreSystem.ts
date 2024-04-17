@@ -7,6 +7,7 @@ import { ICounterData } from '../../../components/counters/Counter'
 import { MechEquipment } from '../equipment/MechEquipment'
 import { IDeployableData } from '../../../components/feature/deployable/Deployable'
 import { CompendiumItem } from '../../../CompendiumItem'
+import { accentInclude } from '@/classes/utility/accent_fold'
 
 interface ICoreData {
   name: string
@@ -197,6 +198,13 @@ class CoreSystem {
 
   public get Tags(): Tag[] {
     return Tag.Deserialize(this._tags)
+  }
+
+  public searchMatch(text: string): boolean {
+    return accentInclude(this.Name, text)
+      || accentInclude(this.Description, text)
+      || accentInclude(this.ActiveEffect, text)
+      || accentInclude(this.PassiveEffect, text)
   }
 }
 

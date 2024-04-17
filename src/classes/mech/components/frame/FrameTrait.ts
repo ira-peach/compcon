@@ -6,6 +6,7 @@ import { ISynergyData, Synergy } from '../../../components/feature/synergy/Syner
 import { ICounterData } from '../../../components/counters/Counter'
 import { MechEquipment } from '../equipment/MechEquipment'
 import { IDeployableData } from '../../../components/feature/deployable/Deployable'
+import { accentInclude } from '@/classes/utility/accent_fold'
 
 interface IFrameTraitData {
   name: string
@@ -82,6 +83,10 @@ class FrameTrait {
     return this._integrated
       .map(x => store.getters.referenceByID('MechSystems', x))
       .filter(x => !x.err)
+  }
+
+  public searchMatch(text: string): boolean {
+    return accentInclude(this.Name, text) || accentInclude(this.Description, text)
   }
 }
 

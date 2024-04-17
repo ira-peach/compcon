@@ -4,6 +4,7 @@ import { IDeployableData } from './components/feature/deployable/Deployable'
 import { isNumber } from 'lodash'
 import { IDamageData } from './Damage'
 import { IRangeData } from './Range'
+import { accentInclude } from '@/classes/utility/accent_fold'
 
 interface IActionData {
   id?: string
@@ -247,6 +248,10 @@ class Action {
       default:
         return `cci-${this.Activation.toLowerCase().replace(' ', '-')}`
     }
+  }
+
+  public searchMatch(text: string): boolean {
+    return accentInclude(this.Name, text) || accentInclude(this.Detail, text)
   }
 
   public static CreateDeployAction(d: IDeployableData, origin?: string): Action {
