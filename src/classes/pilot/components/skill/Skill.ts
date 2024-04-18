@@ -16,6 +16,7 @@ class Skill extends CompendiumItem {
     this.Detail = data.detail
     this.Family = SkillFamily[data.family] as SkillFamily
     this.ItemType = ItemType.Skill
+    this.addSearchable(this.Detail)
   }
 
   public get Trigger(): string {

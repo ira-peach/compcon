@@ -32,6 +32,7 @@ class Talent extends CompendiumItem {
     this._icon_url = data.icon_url || ''
     this._ranks = data.ranks.map(x => new TalentRank(x))
     this.ItemType = ItemType.Talent
+    this.addSearchable(this.Terse)
   }
 
   public get Ranks(): TalentRank[] {

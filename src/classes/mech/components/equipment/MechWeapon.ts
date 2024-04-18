@@ -97,6 +97,11 @@ class WeaponProfile extends CompendiumItem {
     if (pData.on_attack) this.OnAttack = pData.on_attack
     if (pData.on_hit) this.OnHit = pData.on_hit
     if (pData.on_crit) this.OnCrit = pData.on_crit
+
+    this.addSearchable(this.Effect)
+    this.addSearchable(this.OnAttack)
+    this.addSearchable(this.OnHit)
+    this.addSearchable(this.OnCrit)
   }
 }
 

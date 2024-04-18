@@ -79,6 +79,12 @@ class Reserve extends CompendiumItem {
     this.LcpName = packName || 'LANCER Core Book'
     this.InLcp = packName ? true : false
     this.ItemType = ItemType.Reserve
+    this.Actions.forEach(x => {
+      this.addSearchable(x.Name)
+      this.addSearchable(x.Detail)
+      this.addSearchable(x.Init)
+      this.addSearchable(x.Trigger)
+    })
   }
 
   protected save(): void {

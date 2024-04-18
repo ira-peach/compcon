@@ -30,6 +30,8 @@ class CoreBonus extends CompendiumItem {
     this.Effect = data.effect
     this.MountedEffect = data.mounted_effect || ''
     this.ItemType = ItemType.CoreBonus
+    this.addSearchable(this.Effect)
+    this.addSearchable(this.MountedEffect)
   }
 
   public get Manufacturer(): Manufacturer {

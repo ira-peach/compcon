@@ -64,6 +64,42 @@ class Frame extends LicensedItem implements IFeatureContainer {
     this.OtherArt = frameData.other_art
     this.Specialty = frameData.specialty || false
     this.Variant = frameData.variant || ''
+    this.addSearchable(this.CoreSystem.Name)
+    this.addSearchable(this.CoreSystem.Description)
+    this.addSearchable(this.CoreSystem.ActiveEffect)
+    this.addSearchable(this.CoreSystem.PassiveEffect)
+    this.addSearchable(this.CoreSystem.ActivateAction.Name)
+    this.addSearchable(this.CoreSystem.ActivateAction.Detail)
+    this.addSearchable(this.CoreSystem.ActivateAction.Init)
+    this.addSearchable(this.CoreSystem.ActivateAction.Trigger)
+    this.CoreSystem.Actions.forEach(x => {
+      this.addSearchable(x.Name)
+      this.addSearchable(x.Detail)
+      this.addSearchable(x.Init)
+      this.addSearchable(x.Trigger)
+    })
+    this.CoreSystem.ActiveActions.forEach(x => {
+      this.addSearchable(x.Name)
+      this.addSearchable(x.Detail)
+      this.addSearchable(x.Init)
+      this.addSearchable(x.Trigger)
+    })
+    this.CoreSystem.PassiveActions.forEach(x => {
+      this.addSearchable(x.Name)
+      this.addSearchable(x.Detail)
+      this.addSearchable(x.Init)
+      this.addSearchable(x.Trigger)
+    })
+    this.Traits.forEach(x => {
+      this.addSearchable(x.Name)
+      this.addSearchable(x.Description)
+      x.Actions.forEach(y => {
+        this.addSearchable(y.Name)
+        this.addSearchable(y.Detail)
+        this.addSearchable(y.Init)
+        this.addSearchable(y.Trigger)
+      })
+    })
   }
 
   get FeatureSource(): any[] {

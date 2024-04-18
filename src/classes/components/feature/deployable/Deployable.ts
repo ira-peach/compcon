@@ -127,6 +127,7 @@ class Deployable extends CompendiumItem {
     this._resistances = data.resistances || []
     this.IsPilotDeployable = data.pilot
     this.IsMechDeployable = data.mech || !data.pilot
+    this.addSearchable(this.Detail);
   }
 
   private collect(val: string | number, owner: Mech, bonusID: string, mineVal?: number): number {

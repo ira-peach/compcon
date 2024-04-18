@@ -69,6 +69,7 @@ abstract class MechEquipment extends LicensedItem {
     this.NoMods = data.no_mods
     this.NoBonuses = data.no_bonuses
     this.NoSynergies = data.no_synergies
+    this.addSearchable(this.Effect)
   }
 
   public Use(cost?: number, free?: boolean): void {

@@ -55,6 +55,7 @@ abstract class PilotEquipment extends CompendiumItem {
       this.CanSetDamage = data.tags.some(x => x.id === 'tg_set_damage_type')
       this.CanSetUses = data.tags.some(x => x.id === 'tg_set_max_uses')
       this.max_use_override = this.CanSetUses ? 0 : null
+      this.addSearchable(this.Effect)
     } else {
       this._max_uses = 0
       this.max_use_override = null

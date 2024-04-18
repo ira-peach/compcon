@@ -6,6 +6,7 @@ import { IActionData, Action } from './Action'
 import { IBonusData, Bonus } from './components/feature/bonus/Bonus'
 import { ISynergyData, Synergy } from './components/feature/synergy/Synergy'
 import { IDeployableData } from './components/feature/deployable/Deployable'
+import { accentInclude } from '@/classes/utility/accent_fold'
 
 interface ICompendiumItemData {
   id: string
@@ -45,6 +46,7 @@ abstract class CompendiumItem {
   protected _note: string
   protected _flavor_name: string
   protected _flavor_description: string
+  protected _searchable_text: string[]
 
   public constructor(
     data?: ICompendiumItemData,
@@ -52,6 +54,7 @@ abstract class CompendiumItem {
     packName?: string
   ) {
     this.ItemType = ItemType.None
+    this._searchable_text = []
     if (data) {
       this.ID = data.id
       if (data.id && data.id.includes('missing_')) {
@@ -81,6 +84,15 @@ abstract class CompendiumItem {
       this._integrated = data.integrated ? data.integrated : []
       this._special_equipment = data.special_equipment ? data.special_equipment : []
       this.Err = ''
+
+      this.addSearchable(this.Name)
+      this.addSearchable(this.Description)
+      this.Actions.forEach(x => {
+        this.addSearchable(x.Name)
+        this.addSearchable(x.Detail)
+        this.addSearchable(x.Init)
+        this.addSearchable(x.Trigger)
+      })
     } else {
       this.ID = `err_${Math.random().toString(36).substring(2)}`
       this._name = this._description = this._note = this.Brew = ''
@@ -90,9 +102,14 @@ abstract class CompendiumItem {
         this.Deployables =
         this.Counters =
         this._baseTags =
+        this._searchable_text =
           []
       this.Err = 'Item data not found!'
     }
+  }
+
+  protected addSearchable(text: string): void {
+    if (text) this._searchable_text.push(text)
   }
 
   protected save(): void {
@@ -181,6 +198,10 @@ abstract class CompendiumItem {
 
   public get Color(): string {
     return _.kebabCase(this.ItemType)
+  }
+
+  public matchesSearch(text: string): boolean {
+    return this._searchable_text.some(x => accentInclude(x, text))
   }
 }
 
