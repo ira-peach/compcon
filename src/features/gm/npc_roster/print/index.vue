@@ -24,6 +24,7 @@
         :label="$t('common.npc')"
         class="mx-3"
         clearable
+        @update:modelValue="onNpcSelected"
       >
         <template #selection="{ item, index }">
           <v-chip v-if="index < 4">
@@ -101,11 +102,32 @@
     else selectedNpcs.value = allNpcs.value.slice()
   }
 
+  function onNpcSelected(npcs) {
+    let ids = [];
+    for (let i = 0; i < npcs.length; ++i) {
+        let npc = npcs[i];
+        ids.push(npc._id);
+    }
+    props.ids = JSON.stringify(ids);
+    window.history.replaceState(null, null, "/gm/print/npcs/" + JSON.stringify(ids));
+  }
+
+  function selectNpcsAfterLoad(idArr) {
+      selectedNpcs.value = idArr
+        .map(x => NpcStore().Npcs.find(p => p.ID === x) as Npc)
+        .filter(x => !!x);
+  }
+
   onMounted(() => {
     if (!props.ids) return
     const idArr = typeof props.ids === 'string' ? JSON.parse(props.ids) : props.ids
-    selectedNpcs.value = idArr
-      .map(x => NpcStore().Npcs.find(p => p.ID === x) as Npc)
-      .filter(x => !!x)
+    if (NpcStore().Npcs.length === 0) {
+      NpcStore().LoadNpcs().then(() => {
+        selectNpcsAfterLoad(idArr);
+      });
+    }
+    else {
+      selectNpcsAfterLoad(idArr);
+    }
   })
 </script>
